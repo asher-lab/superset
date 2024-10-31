@@ -74,11 +74,12 @@ class ExportChartsCommand(ExportModelsCommand):
 
         # Fetch tags from the database
         tags = (
-            model.tags  # Assuming `tags` is a relationship in the `Slice` model
+            model.tags 
             if hasattr(model, "tags") else []
         )
-        # Filter out any tags that contain "type:" in their name
-        payload["tag"] = [tag.name for tag in tags if not any(x in tag.name for x in ["type:", "owner:"])]
+        # Filter out any tags that contain "type:" and "owner:" in their name
+        payload["tag"] = [tag.name for tag in tags if not any(prefix in tag.name for prefix in ["type:", "owner:"])]
+
                 
         file_content = yaml.safe_dump(payload, sort_keys=False)
         return file_content
