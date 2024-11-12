@@ -30,12 +30,14 @@ from superset.daos.dashboard import DashboardDAO  # Import DAO for fetching dash
 from superset.extensions import feature_flag_manager
 from superset.tags.models import TagType
 from typing import Any
+from superset.commands.tag.exceptions import TagNotFoundError
 
 logger = logging.getLogger(__name__)
 
 
 class ExportTagsCommand(ExportModelsCommand):
     dao = TagDAO
+    not_found = TagNotFoundError
 
     @staticmethod
     def _file_name(model: Any) -> str:

@@ -82,20 +82,16 @@ class ExportChartsCommand(ExportModelsCommand):
         return file_content
 
     # Add a parameter for should_export_tags in the constructor
-    # def __init__(self, chart_ids, should_export_tags=True, export_related=True):
+    # def __init__(
+    #     self,
+    #     chart_ids: list[int],
+    #     should_export_tags: bool = True,
+    #     export_related: bool = True,
+    # ):
+    #     # Initialize the parent class with just the required parameter
     #     super().__init__(chart_ids)
     #     self.should_export_tags = should_export_tags
     #     self.export_related = export_related
-
-    def __init__(
-        self,
-        chart_ids: list[int],
-        should_export_tags: bool = True,
-        export_related: bool = True,
-    ):
-        super().__init__(chart_ids)
-        self.should_export_tags = should_export_tags
-        self.export_related = export_related
 
     # Change to an instance method
     @staticmethod
