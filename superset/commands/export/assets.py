@@ -27,6 +27,7 @@ from superset.commands.dashboard.export import ExportDashboardsCommand
 from superset.commands.database.export import ExportDatabasesCommand
 from superset.commands.dataset.export import ExportDatasetsCommand
 from superset.commands.query.export import ExportSavedQueriesCommand
+from superset.commands.tag.export import ExportTagsCommand
 from superset.utils.dict_import_export import EXPORT_VERSION
 
 METADATA_FILE_NAME = "metadata.yaml"
@@ -50,6 +51,7 @@ class ExportAssetsCommand(BaseCommand):
             ExportDatabasesCommand,
             ExportDatasetsCommand,
             ExportChartsCommand,
+            ExportTagsCommand,
             ExportDashboardsCommand,
             ExportSavedQueriesCommand,
         ]
