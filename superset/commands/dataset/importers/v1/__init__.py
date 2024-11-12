@@ -42,7 +42,7 @@ class ImportDatasetsCommand(ImportModelsCommand):
     import_error = DatasetImportError
 
     @staticmethod
-    def _import(configs: dict[str, Any], overwrite: bool = False) -> None:
+    def _import(configs: dict[str, Any], overwrite: bool = False, contents: dict[str, Any] = None) -> None:
         # discover databases associated with datasets
         database_uuids: set[str] = set()
         for file_name, config in configs.items():
