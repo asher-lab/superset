@@ -21,16 +21,15 @@ from zipfile import ZipFile
 import yaml
 from marshmallow import fields, Schema, validate
 from marshmallow.exceptions import ValidationError
+from sqlalchemy.orm import Session
 
 from superset import db
 from superset.commands.importers.exceptions import IncorrectVersionError
 from superset.databases.ssh_tunnel.models import SSHTunnel
+from superset.extensions import feature_flag_manager
 from superset.models.core import Database
 from superset.tags.models import Tag, TaggedObject
 from superset.utils.core import check_is_safe_zip
-from sqlalchemy.orm import Session
-
-from superset.extensions import feature_flag_manager
 
 METADATA_FILE_NAME = "metadata.yaml"
 IMPORT_VERSION = "1.0.0"
@@ -219,12 +218,19 @@ def get_contents_from_bundle(bundle: ZipFile) -> dict[str, str]:
         if is_valid_config(file_name)
     }
 
-def import_tag(new_tag_names: list[str], contents: dict[str, Any], object_id: int, object_type: str, session: Session) -> list[int]:
-    """ Handles the import logic for tags for charts and dashboards """
-    
-    if not feature_flag_manager.is_feature_enabled('TAGGING_SYSTEM'):
+
+def import_tag(
+    new_tag_names: list[str],
+    contents: dict[str, Any],
+    object_id: int,
+    object_type: str,
+    session: Session,
+) -> list[int]:
+    """Handles the import logic for tags for charts and dashboards"""
+
+    if not feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM"):
         return []
-    
+
     tag_descriptions = {}
     new_tag_ids = []
     if "tags.yaml" in contents:
@@ -250,20 +256,28 @@ def import_tag(new_tag_names: list[str], contents: dict[str, Any], object_id: in
             if tag is None:
                 # If tag does not exist, create it with the provided description
                 description = tag_descriptions.get(tag_name, None)
-                tag = Tag(name=tag_name, description=description, type='custom')
+                tag = Tag(name=tag_name, description=description, type="custom")
                 session.add(tag)
                 session.commit()
 
             # Ensure the association with the object
-            tagged_object = session.query(TaggedObject).filter_by(object_id=object_id, object_type=object_type, tag_id=tag.id).first()
+            tagged_object = (
+                session.query(TaggedObject)
+                .filter_by(object_id=object_id, object_type=object_type, tag_id=tag.id)
+                .first()
+            )
             if not tagged_object:
-                new_tagged_object = TaggedObject(tag_id=tag.id, object_id=object_id, object_type=object_type)
+                new_tagged_object = TaggedObject(
+                    tag_id=tag.id, object_id=object_id, object_type=object_type
+                )
                 session.add(new_tagged_object)
 
             new_tag_ids.append(tag.id)
 
         except Exception as e:
-            logger.error(f"Error processing tag '{tag_name}' for {object_type} ID {object_id}: {e}")
+            logger.error(
+                f"Error processing tag '{tag_name}' for {object_type} ID {object_id}: {e}"
+            )
             continue  # Continue to the next tag if there's an error
 
     # Remove old tags not in the new config
