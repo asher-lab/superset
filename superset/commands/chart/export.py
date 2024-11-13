@@ -102,3 +102,6 @@ class ExportChartsCommand(ExportModelsCommand):
                     path_info = frame_info.frame.f_locals["PATH_INFO"]
                     if "dashboard/export" not in path_info:
                         yield from ExportTagsCommand._export(chart_ids=[model.id])
+                        break
+                else:
+                    yield from ExportTagsCommand._export(chart_ids=[model.id])

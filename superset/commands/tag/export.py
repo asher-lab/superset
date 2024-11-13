@@ -17,22 +17,17 @@
 # isort:skip_file
 
 
-import logging
-from collections.abc import Iterator
-from typing import Callable, List, Optional, Union
-from superset.daos.tag import TagDAO
-
 import yaml
+from typing import Any, Callable, List, Optional, Union
+from collections.abc import Iterator
 
+from superset.daos.tag import TagDAO
 from superset.commands.export.models import ExportModelsCommand
-from superset.daos.chart import ChartDAO  # Import DAO for fetching charts
-from superset.daos.dashboard import DashboardDAO  # Import DAO for fetching dashboards
+from superset.daos.chart import ChartDAO
+from superset.daos.dashboard import DashboardDAO
 from superset.extensions import feature_flag_manager
 from superset.tags.models import TagType
-from typing import Any
 from superset.commands.tag.exceptions import TagNotFoundError
-
-logger = logging.getLogger(__name__)
 
 
 class ExportTagsCommand(ExportModelsCommand):
