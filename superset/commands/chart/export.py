@@ -16,6 +16,7 @@
 # under the License.
 # isort:skip_file
 
+import inspect
 import logging
 from collections.abc import Iterator
 from typing import Callable
@@ -81,18 +82,6 @@ class ExportChartsCommand(ExportModelsCommand):
         file_content = yaml.safe_dump(payload, sort_keys=False)
         return file_content
 
-    # Add a parameter for should_export_tags in the constructor
-    # def __init__(
-    #     self,
-    #     chart_ids: list[int],
-    #     should_export_tags: bool = True,
-    #     export_related: bool = True,
-    # ):
-    #     # Initialize the parent class with just the required parameter
-    #     super().__init__(chart_ids)
-    #     self.should_export_tags = should_export_tags
-    #     self.export_related = export_related
-
     # Change to an instance method
     @staticmethod
     def _export(
@@ -106,5 +95,10 @@ class ExportChartsCommand(ExportModelsCommand):
         if model.table and export_related:
             yield from ExportDatasetsCommand([model.table.id]).run()
 
+        # Check if the calling class is ExportDashboardCommands
         if export_related and feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM"):
-            yield from ExportTagsCommand._export(chart_ids=[model.id])
+            for frame_info in inspect.stack():
+                if "PATH_INFO" in frame_info.frame.f_locals:
+                    path_info = frame_info.frame.f_locals["PATH_INFO"]
+                    if "dashboard/export" not in path_info:
+                        yield from ExportTagsCommand._export(chart_ids=[model.id])
