@@ -42,6 +42,7 @@ class ImportSavedQueriesCommand(ImportModelsCommand):
     }
     import_error = SavedQueryImportError
 
+    # pylint: disable=W0613
     @staticmethod
     def _import(
         configs: dict[str, Any],

@@ -41,6 +41,7 @@ class ImportDatabasesCommand(ImportModelsCommand):
     }
     import_error = DatabaseImportError
 
+    # pylint: disable=W0613
     @staticmethod
     def _import(
         configs: dict[str, Any],

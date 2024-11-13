@@ -44,7 +44,6 @@ class ImportModelsCommand(BaseCommand):
     schemas: dict[str, Schema] = {}
     import_error = CommandException
 
-    # pylint: disable=unused-argument
     def __init__(self, contents: dict[str, str], *args: Any, **kwargs: Any):
         self.contents = contents
         self.passwords: dict[str, str] = kwargs.get("passwords") or {}
@@ -61,7 +60,13 @@ class ImportModelsCommand(BaseCommand):
         self._configs: dict[str, Any] = {}
 
     @staticmethod
-    def _import(configs: dict[str, Any], overwrite: bool = False) -> None:
+    def _import(
+        configs: dict[str, Any],
+        overwrite: bool = False,
+        contents: Optional[
+            dict[str, Any]
+        ] = None,  # Use dict[str, str] to match the parent class signature
+    ) -> None:
         raise NotImplementedError("Subclasses MUST implement _import")
 
     @classmethod
@@ -72,7 +77,6 @@ class ImportModelsCommand(BaseCommand):
     def run(self) -> None:
         self.validate()
 
-        # pylint: disable=too-many-arguments
         try:
             self._import(self._configs, self.overwrite, self.contents)
         except CommandException:
