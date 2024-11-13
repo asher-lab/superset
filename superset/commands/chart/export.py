@@ -97,11 +97,12 @@ class ExportChartsCommand(ExportModelsCommand):
 
         # Check if the calling class is ExportDashboardCommands
         if export_related and feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM"):
-            for frame_info in inspect.stack():
-                if "PATH_INFO" in frame_info.frame.f_locals:
-                    path_info = frame_info.frame.f_locals["PATH_INFO"]
-                    if "dashboard/export" not in path_info:
-                        yield from ExportTagsCommand._export(chart_ids=[model.id])
-                        break
-                else:
-                    yield from ExportTagsCommand._export(chart_ids=[model.id])
+            stack = inspect.stack()
+            for frame_info in stack:
+                environ = frame_info.frame.f_locals.get("environ")
+                if environ:
+                    path_info = environ.get("PATH_INFO")
+                    if path_info:
+                        # Check if PATH_INFO contains the substring 'dashboard/export' else export tags of Charts
+                        if "dashboard/export" not in path_info:
+                            yield from ExportTagsCommand._export(chart_ids=[model.id])

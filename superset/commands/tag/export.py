@@ -17,12 +17,11 @@
 # isort:skip_file
 
 
-import yaml
 from typing import Any, Callable, List, Optional, Union
 from collections.abc import Iterator
 
+import yaml
 from superset.daos.tag import TagDAO
-from superset.commands.export.models import ExportModelsCommand
 from superset.daos.chart import ChartDAO
 from superset.daos.dashboard import DashboardDAO
 from superset.extensions import feature_flag_manager
@@ -30,12 +29,12 @@ from superset.tags.models import TagType
 from superset.commands.tag.exceptions import TagNotFoundError
 
 
-class ExportTagsCommand(ExportModelsCommand):
+class ExportTagsCommand:
     dao = TagDAO
     not_found = TagNotFoundError
 
     @staticmethod
-    def _file_name(model: Any) -> str:
+    def _file_name() -> str:
         # Use the model to determine the filename
         return "tags.yaml"
 
@@ -125,10 +124,9 @@ class ExportTagsCommand(ExportModelsCommand):
         chart_ids: Optional[Union[int, List[Union[int, str]]]] = None,
     ) -> Iterator[tuple[str, Callable[[], str]]]:
         if not feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM"):
-            return iter([])
+            yield from iter([])
+
         yield (
-            ExportTagsCommand._file_name(
-                None
-            ),  # Pass None or a model instance if required
+            ExportTagsCommand._file_name(),
             lambda: ExportTagsCommand._file_content(dashboard_ids, chart_ids),
         )
