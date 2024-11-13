@@ -105,4 +105,4 @@ class ExportChartsCommand(ExportModelsCommand):
                     if path_info:
                         # Check if PATH_INFO contains the substring 'dashboard/export' else export tags of Charts
                         if "dashboard/export" not in path_info:
-                            yield from ExportTagsCommand._export(chart_ids=[model.id])
+                            yield from ExportTagsCommand.export(chart_ids=[model.id])

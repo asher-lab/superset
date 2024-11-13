@@ -120,7 +120,7 @@ class ExportTagsCommand:
         return file_content
 
     @staticmethod
-    def _export(
+    def export(
         dashboard_ids: Optional[Union[int, List[Union[int, str]]]] = None,
         chart_ids: Optional[Union[int, List[Union[int, str]]]] = None,
     ) -> Iterator[tuple[str, Callable[[], str]]]:
