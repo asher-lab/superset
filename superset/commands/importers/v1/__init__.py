@@ -44,6 +44,7 @@ class ImportModelsCommand(BaseCommand):
     schemas: dict[str, Schema] = {}
     import_error = CommandException
 
+    # pylint: disable=unused-argument
     def __init__(self, contents: dict[str, str], *args: Any, **kwargs: Any):
         self.contents = contents
         self.passwords: dict[str, str] = kwargs.get("passwords") or {}
