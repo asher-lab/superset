@@ -99,7 +99,7 @@ def validate_metadata_type(
             exceptions.append(exc)
 
 
-# pylint: disable=too-many-locals,too-many-arguments,too-many-positional-arguments
+# pylint: disable=too-many-locals,too-many-arguments
 def load_configs(
     contents: dict[str, str],
     schemas: dict[str, Schema],

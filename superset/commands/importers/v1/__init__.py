@@ -60,6 +60,7 @@ class ImportModelsCommand(BaseCommand):
         self.overwrite: bool = kwargs.get("overwrite", False)
         self._configs: dict[str, Any] = {}
 
+    # pylint: disable=too-many-statements
     @staticmethod
     def _import(
         configs: dict[str, Any],

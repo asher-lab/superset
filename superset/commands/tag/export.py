@@ -29,6 +29,7 @@ from superset.tags.models import TagType
 from superset.commands.tag.exceptions import TagNotFoundError
 
 
+# pylint: disable=too-few-public-methods
 class ExportTagsCommand:
     dao = TagDAO
     not_found = TagNotFoundError
