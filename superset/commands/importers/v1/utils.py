@@ -99,7 +99,7 @@ def validate_metadata_type(
             exceptions.append(exc)
 
 
-# pylint: disable=too-many-locals,too-many-arguments
+# pylint: disable=too-many-locals,too-many-arguments,too-many-positional-arguments
 def load_configs(
     contents: dict[str, str],
     schemas: dict[str, Schema],
@@ -220,6 +220,7 @@ def get_contents_from_bundle(bundle: ZipFile) -> dict[str, str]:
     }
 
 
+# pylint: disable=consider-using-transaction
 def import_tag(
     new_tag_names: list[str],
     contents: dict[str, Any],
