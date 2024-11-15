@@ -92,7 +92,6 @@ class ExportChartsCommand(ExportModelsCommand):
     def enable_tag_export(cls) -> None:
         cls._include_tags = True
 
-    # Change to an instance method
     @staticmethod
     def _export(
         model: Slice, export_related: bool = True
