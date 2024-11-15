@@ -81,28 +81,25 @@ class ExportChartsCommand(ExportModelsCommand):
             payload["tags"] = [tag.name for tag in tags if tag.type == TagType.custom]
         file_content = yaml.safe_dump(payload, sort_keys=False)
         return file_content
+    
+    def __init__(self, chart_ids, should_export_tags=True):
+        super().__init__(chart_ids)
+        self.should_export_tags = should_export_tags
 
-    # Change to an instance method
-    @staticmethod
     def _export(
-        model: Slice, export_related: bool = True
+        self, model: Slice, export_related: bool = True
     ) -> Iterator[tuple[str, Callable[[], str]]]:
+        # Export the chart file
         yield (
             ExportChartsCommand._file_name(model),
             lambda: ExportChartsCommand._file_content(model),
         )
 
+        # Export related dataset if it exists
         if model.table and export_related:
             yield from ExportDatasetsCommand([model.table.id]).run()
 
-        # Check if the calling class is ExportDashboardCommands
-        if export_related and feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM"):
-            stack = inspect.stack()
-            for frame_info in stack:
-                environ = frame_info.frame.f_locals.get("environ")
-                if environ:
-                    path_info = environ.get("PATH_INFO")
-                    if path_info:
-                        # Check if PATH_INFO contains the substring 'dashboard/export' else export tags of Charts
-                        if "dashboard/export" not in path_info:
-                            yield from ExportTagsCommand.export(chart_ids=[model.id])
+        # Export related tags if the feature flag is enabled
+        if export_related and self.should_export_tags:
+            chart_id = model.id
+            yield from ExportTagsCommand().export(chart_ids=[chart_id])
