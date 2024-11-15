@@ -16,7 +16,6 @@
 # under the License.
 # isort:skip_file
 
-import inspect
 import logging
 from collections.abc import Iterator
 from typing import Callable
@@ -105,6 +104,10 @@ class ExportChartsCommand(ExportModelsCommand):
             yield from ExportDatasetsCommand([model.table.id]).run()
 
         # Check if the calling class is ExportDashboardCommands
-        if export_related and ExportChartsCommand._include_tags and feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM"):
+        if (
+            export_related
+            and ExportChartsCommand._include_tags
+            and feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM")
+        ):
             chart_id = model.id
             yield from ExportTagsCommand().export(chart_ids=[chart_id])
