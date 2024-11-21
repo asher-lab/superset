@@ -241,12 +241,12 @@ def import_tag(
         except yaml.YAMLError as err:
             logger.error("Error parsing tags.yaml: %s", err)
             tags_config = {}
-            
+
         for tag_info in tags_config.get("tags", []):
             tag_name = tag_info.get("tag_name")
             description = tag_info.get("description", None)
             if tag_name:
-                    tag_descriptions[tag_name] = description
+                tag_descriptions[tag_name] = description
     existing_tags = (
         db_session.query(TaggedObject)
         .filter_by(object_id=object_id, object_type=object_type)
