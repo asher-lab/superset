@@ -23,7 +23,6 @@ import yaml
 from freezegun import freeze_time
 from pytest_mock import MockerFixture
 
-from superset.commands.tag.export import ExportTagsCommand
 from superset.extensions import feature_flag_manager
 
 
@@ -102,6 +101,8 @@ def test_export_assets_command(mocker: MockerFixture) -> None:
 
 @pytest.fixture
 def mock_export_tags_command_charts_dashboards(mocker):
+    ExportTagsCommand = mocker.patch("superset.commands.tag.export.ExportTagsCommand")
+
     def _mock_export(dashboard_ids=None, chart_ids=None):
         if not feature_flag_manager.is_feature_enabled("TAGGING_SYSTEM"):
             return iter([])
