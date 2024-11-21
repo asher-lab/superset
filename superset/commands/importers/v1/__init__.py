@@ -90,7 +90,7 @@ class ImportModelsCommand(BaseCommand):
 
         # verify that the metadata file is present and valid
         try:
-            metadata: dict[str, str] = load_metadata(self.contents)
+            metadata: dict[str, str] | None = load_metadata(self.contents)
         except ValidationError as exc:
             exceptions.append(exc)
             metadata = None
