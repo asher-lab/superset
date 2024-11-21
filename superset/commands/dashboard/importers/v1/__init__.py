@@ -65,7 +65,6 @@ class ImportDashboardsCommand(ImportModelsCommand):
         configs: dict[str, Any],
         overwrite: bool = False,
         contents: dict[str, Any] = {},
-        
     ) -> None:
         if contents is None:
             contents = {}
