@@ -15,6 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 
+from __future__ import annotations
+
 from typing import Any
 
 from marshmallow import Schema
@@ -33,7 +35,7 @@ from superset.daos.chart import ChartDAO
 from superset.databases.schemas import ImportV1DatabaseSchema
 from superset.datasets.schemas import ImportV1DatasetSchema
 from superset.extensions import feature_flag_manager
-from __future__ import annotations
+
 
 class ImportChartsCommand(ImportModelsCommand):
     """Import charts"""

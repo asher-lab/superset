@@ -14,7 +14,9 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import Any
 
 from marshmallow import Schema, validate  # noqa: F401
 from marshmallow.exceptions import ValidationError
@@ -33,7 +35,7 @@ from superset.commands.importers.v1.utils import (
 from superset.daos.base import BaseDAO
 from superset.models.core import Database  # noqa: F401
 from superset.utils.decorators import transaction
-from __future__ import annotations
+
 
 class ImportModelsCommand(BaseCommand):
     """Import models"""
@@ -88,7 +90,7 @@ class ImportModelsCommand(BaseCommand):
 
         # verify that the metadata file is present and valid
         try:
-            metadata: Optional[dict[str, str]] = load_metadata(self.contents)
+            metadata: dict[str, str] = load_metadata(self.contents)
         except ValidationError as exc:
             exceptions.append(exc)
             metadata = None

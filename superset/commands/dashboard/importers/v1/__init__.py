@@ -15,6 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 
+from __future__ import annotations
+
 from typing import Any
 
 from marshmallow import Schema
@@ -42,7 +44,7 @@ from superset.datasets.schemas import ImportV1DatasetSchema
 from superset.extensions import feature_flag_manager
 from superset.migrations.shared.native_filters import migrate_dashboard
 from superset.models.dashboard import Dashboard, dashboard_slices
-from __future__ import annotations
+
 
 class ImportDashboardsCommand(ImportModelsCommand):
     """Import dashboards"""
