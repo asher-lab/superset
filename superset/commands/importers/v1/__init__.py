@@ -33,7 +33,7 @@ from superset.commands.importers.v1.utils import (
 from superset.daos.base import BaseDAO
 from superset.models.core import Database  # noqa: F401
 from superset.utils.decorators import transaction
-
+from __future__ import annotations
 
 class ImportModelsCommand(BaseCommand):
     """Import models"""
