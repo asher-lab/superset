@@ -52,7 +52,7 @@ class ImportChartsCommand(ImportModelsCommand):
     def _import(
         configs: dict[str, Any],
         overwrite: bool = False,
-        contents: dict[str, Any] = {},
+        contents: dict[str, Any] | None = None,
     ) -> None:
         if contents is None:
             contents = {}

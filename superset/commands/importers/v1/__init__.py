@@ -62,7 +62,9 @@ class ImportModelsCommand(BaseCommand):
 
     @staticmethod
     def _import(
-        configs: dict[str, Any], overwrite: bool = False, contents: dict[str, Any] = {}
+        configs: dict[str, Any],
+        overwrite: bool = False,
+        contents: dict[str, Any] | None = None,
     ) -> None:
         raise NotImplementedError("Subclasses MUST implement _import")
 
