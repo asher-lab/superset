@@ -461,7 +461,6 @@ class Header extends PureComponent {
       customCss,
       colorNamespace,
       dataMask,
-      setColorScheme,
       setUnsavedChanges,
       colorScheme,
       onUndo,
@@ -496,11 +495,11 @@ class Header extends PureComponent {
     const refreshWarning =
       dashboardInfo.common?.conf
         ?.SUPERSET_DASHBOARD_PERIODICAL_REFRESH_WARNING_MESSAGE;
+    const isEmbedded = !dashboardInfo?.userId;
 
     const handleOnPropertiesChange = updates => {
       const { dashboardInfoChanged, dashboardTitleChanged } = this.props;
 
-      setColorScheme(updates.colorScheme);
       dashboardInfoChanged({
         slug: updates.slug,
         metadata: JSON.parse(updates.jsonMetadata || '{}'),
@@ -553,7 +552,7 @@ class Header extends PureComponent {
                 visible={!editMode}
               />
             ),
-            !editMode && (
+            !editMode && !isEmbedded && (
               <MetadataBar
                 items={this.getMetadataItems()}
                 tooltipPlacement="bottom"
